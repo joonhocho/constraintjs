@@ -33,11 +33,23 @@ export default class ConstraintContainer {
     this.constraints.sort((a, b) => b.getPriority() - a.getPriority());
   }
 
-  update() {
-    for (let i = 0; i < this.constraints.length; i++) {
+  getNextIndex(obj, prop) {
+    if (!obj) return 0;
+    const nextIndex = this.constraints.findIndex(
+      x => x.hasArgument(obj, prop)
+    );
+    return nextIndex >= 0 ? nextIndex : 0;
+  }
+
+  update(obj, prop) {
+    for (let i = this.getNextIndex(obj, prop); i < this.constraints.length;) {
       const c = this.constraints[i];
-      const tvs = c.getTargetValueFromSource();
-      if (c.setTargetValue(tvs)) i = 0;
+      if (c.updateTargetValue()) {
+        const nextIndex = this.getNextIndex(c.target, c.targetProp);
+        i = nextIndex === i ? (i ? 0 : 1) : nextIndex;
+      } else {
+        i++;
+      }
     }
   }
 }
