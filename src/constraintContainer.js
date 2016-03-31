@@ -36,7 +36,7 @@ export default class ConstraintContainer {
   getNextIndex(obj, prop) {
     if (!obj) return 0;
     const nextIndex = this.constraints.findIndex(
-      x => x.hasArgument(obj, prop)
+      x => x.indexOfPropertyArgument(obj, prop) >= 0
     );
     return nextIndex >= 0 ? nextIndex : 0;
   }

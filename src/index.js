@@ -1,6 +1,8 @@
+import 'babel-polyfill';
+
 import Constraint from './constraint';
+import {LimitConstraint} from './constraint';
 import ConstraintContainer from './constraintContainer';
-import {ObjectConstraint} from './constraintValue';
 
 const box = {x: 0, y: 0, width: 420, height: 600};
 const o1 = {x: 0, y: 0, width: 0, height: 0};
@@ -11,34 +13,28 @@ const o4 = {x: 0, y: 0, width: 0, height: 0};
 const cs = new ConstraintContainer([
   new Constraint(
     o1, 'x',
-    [new ObjectConstraint(box, 'x')],
+    [[box, 'x']],
     x => x
   ),
   new Constraint(
     o2, 'x',
-    [new ObjectConstraint(o1, 'x')],
+    [[o1, 'x']],
     x => x + 10
   ),
   new Constraint(
     o3, 'x',
-    [new ObjectConstraint(o2, 'x')],
+    [[o2, 'x']],
     x => 3 * x
   ),
   new Constraint(
     o4, 'x',
-    [
-      new ObjectConstraint(o3, 'x'),
-      new ObjectConstraint(o3, 'width')
-    ],
-    (x, width) => (x + width) + 50
+    [[o3, 'x'], [o3, 'width'], 50],
+    (x, width, c) => (x + width) + c
   ),
-  new Constraint(
-    o4, 'width',
-    [
-      new ObjectConstraint(box, 'x'),
-      new ObjectConstraint(box, 'width')
-    ],
-    (x, width) => (x + width) - 50
+  new LimitConstraint(
+    o4, 'height',
+    [50, 100],
+    (min, max) => ({min, max})
   ),
 ]);
 
