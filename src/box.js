@@ -9,6 +9,10 @@ export default class Box extends Component {
   get y() { return this.getStyleValue('top'); }
   get width() { return this.getStyleValue('width'); }
   get height() { return this.getStyleValue('height'); }
+  get left() { return this.x; }
+  get top() { return this.y; }
+  get right() { return this.x + this.width; }
+  get bottom() { return this.y + this.height; }
 
   setStyleValue(name, x) {
     if (this.refs && this.refs.box) this.refs.box.style[name] = `${x}px`;

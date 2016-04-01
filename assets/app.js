@@ -131,19 +131,54 @@
 	      window.addEventListener('resize', this.handleResize);
 
 	      var _refs = this.refs;
-	      var red = _refs.red;
-	      var blue = _refs.blue;
-	      var yellow = _refs.yellow;
+	      var message = _refs.message;
+	      var pic = _refs.pic;
+	      var balloon1 = _refs.balloon1;
+	      var balloon2 = _refs.balloon2;
+	      var timestamp = _refs.timestamp;
+	      var date = _refs.date;
 
-	      console.log(red);
-	      this.container = new _constraintContainer2.default([new _constraint2.default(red, 'x', [50], function (c) {
-	        return c;
-	      }), new _constraint2.default(red, 'width', [[this, 'width']], function (width) {
-	        return width - 100;
-	      }), new _constraint2.default(red, 'y', [50], function (c) {
-	        return c;
-	      }), new _constraint2.default(red, 'height', [[this, 'height']], function (height) {
-	        return height - 100;
+	      pic.width = 32;
+	      pic.height = 32;
+
+	      timestamp.width = 60;
+	      timestamp.height = 20;
+
+	      date.width = 140;
+	      date.height = 24;
+
+	      balloon1.width = 300;
+	      balloon1.height = 80;
+
+	      balloon2.width = 200;
+	      balloon2.height = 120;
+
+	      this.container = new _constraintContainer2.default([new _constraint2.default(message, 'x', [[timestamp, 'x']], function (x) {
+	        return x;
+	      }), new _constraint2.default(message, 'y', [[date, 'y']], function (x) {
+	        return x;
+	      }), new _constraint2.default(message, 'width', [[timestamp, 'x'], [pic, 'right']], function (timestampX, picRight) {
+	        return picRight - timestampX;
+	      }), new _constraint2.default(message, 'height', [[date, 'y'], [pic, 'bottom']], function (dateY, picBottom) {
+	        return picBottom - dateY;
+	      }), new _constraint2.default(pic, 'x', [[pic, 'width'], [this, 'width'], 12], function (picWidth, winWidth, margin) {
+	        return winWidth - margin - picWidth;
+	      }), new _constraint2.default(pic, 'y', [[pic, 'height'], [this, 'height'], 20], function (picHeight, winHeight, margin) {
+	        return winHeight - margin - picHeight;
+	      }), new _constraint2.default(balloon1, 'x', [[timestamp, 'right'], 8], function (timestampRight, margin) {
+	        return timestampRight + margin;
+	      }), new _constraint2.default(balloon1, 'width', [[balloon1, 'x'], [pic, 'x'], 8], function (ballon1X, picX, margin) {
+	        return picX - margin - ballon1X;
+	      }), new _constraint2.default(balloon1, 'y', [[pic, 'bottom'], [balloon1, 'height']], function (picBottom, balloon1Height) {
+	        return picBottom - balloon1Height;
+	      }), new _constraint2.default(timestamp, 'x', [0, 12], function (winX, margin) {
+	        return winX + margin;
+	      }), new _constraint2.default(timestamp, 'y', [[pic, 'bottom'], [timestamp, 'height']], function (picBottom, height) {
+	        return picBottom - height;
+	      }), new _constraint2.default(date, 'x', [[this, 'width'], [date, 'width']], function (winWidth, dateWidth) {
+	        return (winWidth - dateWidth) / 2;
+	      }), new _constraint2.default(date, 'y', [[balloon1, 'y'], [date, 'height'], 8], function (balloon1Y, dateHeight, margin) {
+	        return balloon1Y - margin - dateHeight;
 	      })]);
 	    }
 	  }, {
@@ -155,7 +190,7 @@
 	    key: 'render',
 	    value: function render() {
 	      if (this.container) this.container.update();
-	      return _react2.default.createElement('div', null, _react2.default.createElement(_box2.default, { ref: 'red', style: { backgroundColor: 'red' } }), _react2.default.createElement(_box2.default, { ref: 'blue' }), _react2.default.createElement(_box2.default, { ref: 'yellow' }));
+	      return _react2.default.createElement('div', null, _react2.default.createElement(_box2.default, { ref: 'message', style: { backgroundColor: '#ccc' } }), _react2.default.createElement(_box2.default, { ref: 'pic', style: { backgroundColor: '#eee' } }), _react2.default.createElement(_box2.default, { ref: 'balloon1', style: { backgroundColor: '#eee' } }), _react2.default.createElement(_box2.default, { ref: 'timestamp', style: { backgroundColor: '#eee' } }), _react2.default.createElement(_box2.default, { ref: 'balloon2', style: { backgroundColor: '#eee' } }), _react2.default.createElement(_box2.default, { ref: 'date', style: { backgroundColor: '#eee' } }));
 	    }
 	  }, {
 	    key: 'width',
@@ -20395,6 +20430,26 @@
 	    },
 	    set: function set(height) {
 	      this.setStyleValue('height', height);
+	    }
+	  }, {
+	    key: 'left',
+	    get: function get() {
+	      return this.x;
+	    }
+	  }, {
+	    key: 'top',
+	    get: function get() {
+	      return this.y;
+	    }
+	  }, {
+	    key: 'right',
+	    get: function get() {
+	      return this.x + this.width;
+	    }
+	  }, {
+	    key: 'bottom',
+	    get: function get() {
+	      return this.y + this.height;
 	    }
 	  }]);
 
