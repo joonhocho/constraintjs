@@ -6,7 +6,7 @@
   "scripts": {
     "babel": "babel src -d lib",
     "babel-watch": "babel src -w -d lib",
-    "webpack": "webpack",
+    "webpack": "webpack --config lib/webpack.config.js",
     "start": "npm run babel && node lib/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },

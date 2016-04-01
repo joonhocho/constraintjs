@@ -1,5 +1,3 @@
-import './app.css';
-
 import React, {Component} from 'react';
 import Constraint from './constraint';
 import ConstraintContainer from './constraintContainer';
